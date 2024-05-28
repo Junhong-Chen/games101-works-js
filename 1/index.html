@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>work-1</title>
+  <style>
+    article>p {
+      text-indent: 2ch;
+    }
+
+    code {
+      padding: 2px;
+      margin-left: 2ch;
+      background-color: #333;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <article>
+    <p>
+      到目前为止，我们已经学习了如何使用矩阵变换来排列二维或三维空间中的对象。所以现在是时候通过实现一些简单的变换矩阵来获得一些实际经验了。在接下来的三次作业中，我们将要求你去模拟一个<mark>基于 CPU 的光栅化渲染器</mark>的简化版本。
+    </p>
+    <p>
+      本次作业的任务是填写一个旋转矩阵和一个透视投影矩阵。给定三维下三个点 v0(2.0, 0.0, −2.0), v1(0.0, 2.0, −2.0), v2(−2.0, 0.0, −2.0), 你需要将这三个点的坐标变换为屏幕坐标并在屏幕上绘制出对应的线框三角形 (在代码框架中，我们已经提供了 draw_triangle 函数，所以你只需要去构建变换矩阵即可)。简而言之，我们需要进行模型、视图、投影、视口等变换来将三角形显示在屏幕上。在提供的代码框架中，我们留下了模型变换和投影变换的部分给你去完成。
+    </p>
+    <p>
+      如果你对上述概念有任何不清楚或疑问，请复习课堂笔记或询问助教。
+    </p>
+    <p>
+      以下是你需要在 main.cpp 中修改的函数（请不要修改任何的函数名和其他已经填写好的函数，并保证提交的代码是已经完成且能运行的）：
+    </p>
+    <p>
+      • get_model_matrix(float rotation_angle): 逐个元素地构建模型变换矩阵并返回该矩阵。在此函数中，你只需要实现三维中绕 z 轴旋转的变换矩阵，而不用处理平移与缩放。
+    </p>
+    <p>
+      • get_projection_matrix(float eye_fov, float aspect_ratio, float zNear, float zFar): 使用给定的参数逐个元素地构建透视投影矩阵并返回该矩阵。
+    </p>
+    <p>
+      • [Optional] main(): 自行补充你所需的其他操作。
+    </p>
+    <p>
+      当你在上述函数中正确地构建了模型与投影矩阵，光栅化器会创建一个窗口显示出线框三角形。由于光栅化器是逐帧渲染与绘制的，所以你可以使用 A 和 D 键去将该三角形绕 z 轴旋转 (此处有一项提高作业，将三角形绕任意过原点的轴旋转)。当你按下 Esc 键时，窗口会关闭且程序终止。
+    </p>
+    <p>
+      另外，你也可以从命令行中运行该程序。你可以使用以下命令来运行和传递旋转角给程序，在这样的运行方式下，是不会生成任何的窗口，输出的结果图像会被存储在给定的文件中 (若未指定文件名，则默认存储在 output.png 中)。图像的存储位置在可执行文件旁，所以如果你的可执行文件是在 build 文件夹中，那么图像也会在该文件夹内。
+    </p>
+    <p>
+      命令行的使用命令如下：
+    </p>
+    <code>./Rasterizer // 循环运行程序，创建一个窗口显示，且你可以使用 A 键和 D 键旋转三角形。</code><br>
+    <code>./Rasterizer −r 20 // 运行程序并将三角形旋转 20 度，然后将结果存在 output.png 中。</code><br>
+    <code>./Rasterizer −r 20 image.png // 运行程序并将三角形旋转 20 度，然后将结果存在 image.png 中。</code>
+  </article>
+  <br>
+  <canvas id="canvasEl" width="700" height="700"></canvas>
+  <script src="./index.js" type="module"></script>
+</body>
+</html>
