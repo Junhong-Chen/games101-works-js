@@ -15,17 +15,27 @@ const width = canvasEl.getAttribute('width')
 const height = canvasEl.getAttribute('height')
 let angle = 0
 
-function getModelMatrix(angle) {
+function getModelMatrix(axis, angle) {
   angle = angle / 180 * Math.PI
+  let [x, y, z] = axis
   const cos = Math.cos(angle)
   const sin = Math.sin(angle)
-  const rotateZ = new Matrix4(
-    cos, -sin, 0, 0,
-    sin, cos, 0, 0,
-    0, 0, 1, 0,
-    0, 0, 0, 1
+  const t = 1 - cos
+
+  // 规范化旋转轴
+  const length = Math.sqrt(x * x + y * y + z * z)
+  x /= length
+  y /= length
+  z /= length
+
+  // Rodrigues 旋转公式
+  const rotate = new Matrix4(
+    t * x * x + cos,     t * x * y - sin * z, t * x * z + sin * y, 0,
+    t * x * y + sin * z, t * y * y + cos,     t * y * z - sin * x, 0,
+    t * x * z - sin * y, t * y * z + sin * x, t * z * z + cos,     0,
+    0,                   0,                   0,                   1
   )
-  return rotateZ
+  return rotate
 }
 
 function getViewMatrix(cameraPosition) {
@@ -54,13 +64,6 @@ function getProjectionMatrix(fov, aspectRatio, near, far) {
     0, 0, near + far, -near * far,
     0, 0, 1, 0
   )
-
-  // const orthographic = new Matrix4(
-  //   2 / (r - l), 0, 0, -(l + r) / 2,
-  //   0, 2 / (t - b), 0, -(b + t) / 2,
-  //   0, 0, 2 / (far - near), -(near + far) / 2,
-  //   0, 0, 0, 1
-  // )
 
   const scale = new Matrix4(
     2 / (r - l), 0, 0, 0,
@@ -95,7 +98,7 @@ function render(angle = 0) {
   const indicesId = rasterizer.loadIndices(indices)
 
   rasterizer.clear(true, true)
-  rasterizer.setModel(getModelMatrix(angle))
+  rasterizer.setModel(getModelMatrix(vec3.fromValues(0, 0, 1), angle))
   rasterizer.setView(getViewMatrix(cameraPosition))
   rasterizer.setProjection(getProjectionMatrix(45, 1, 0.1, 50))
   rasterizer.draw(positionId, indicesId, 'triangle')

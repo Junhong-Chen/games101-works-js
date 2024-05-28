@@ -32,15 +32,11 @@
     <p>
       以下是你需要在 main.cpp 中修改的函数（请不要修改任何的函数名和其他已经填写好的函数，并保证提交的代码是已经完成且能运行的）：
     </p>
-    <p>
-      • get_model_matrix(float rotation_angle): 逐个元素地构建模型变换矩阵并返回该矩阵。在此函数中，你只需要实现三维中绕 z 轴旋转的变换矩阵，而不用处理平移与缩放。
-    </p>
-    <p>
-      • get_projection_matrix(float eye_fov, float aspect_ratio, float zNear, float zFar): 使用给定的参数逐个元素地构建透视投影矩阵并返回该矩阵。
-    </p>
-    <p>
-      • [Optional] main(): 自行补充你所需的其他操作。
-    </p>
+    <ul>
+      <li>get_model_matrix(float rotation_angle): 逐个元素地构建模型变换矩阵并返回该矩阵。在此函数中，你只需要实现三维中绕 z 轴旋转的变换矩阵，而不用处理平移与缩放。</li>
+      <li>get_projection_matrix(float eye_fov, float aspect_ratio, float zNear, float zFar): 使用给定的参数逐个元素地构建透视投影矩阵并返回该矩阵。</li>
+      <li>[Optional] main(): 自行补充你所需的其他操作。</li>
+    </ul>
     <p>
       当你在上述函数中正确地构建了模型与投影矩阵，光栅化器会创建一个窗口显示出线框三角形。由于光栅化器是逐帧渲染与绘制的，所以你可以使用 A 和 D 键去将该三角形绕 z 轴旋转 (此处有一项提高作业，将三角形绕任意过原点的轴旋转)。当你按下 Esc 键时，窗口会关闭且程序终止。
     </p>
