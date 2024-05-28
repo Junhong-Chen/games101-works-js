@@ -1,4 +1,4 @@
-import { vec2, vec3, mat4 } from "gl-matrix"
+import { vec2, vec3 } from "gl-matrix"
 
 export default class Triangle {
   get a() {

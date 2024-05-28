@@ -1,5 +1,5 @@
 import Rasterizer from "./rasterizer"
-import { mat3, vec3, mat4 } from "gl-matrix"
+import { vec3, mat4 } from "gl-matrix"
 
 // fromValues 方法的入参是按“列”顺序传入的，这里封装下改成按“行”传入
 function Matrix4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33) {
