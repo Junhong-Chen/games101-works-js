@@ -64,7 +64,7 @@ export default class Rasterizer {
       this.#frameBuffers.fill(vec3.fromValues(0, 0, 0))
     }
     if (depthBuffer) {
-      this.#depthBuffers.fill(vec3.fromValues(Infinity, Infinity, Infinity))
+      this.#depthBuffers.fill(Infinity)
     }
   }
 
@@ -88,14 +88,15 @@ export default class Rasterizer {
         vec4.transformMat4(vec4.create(), vec4.fromValues(...position[i[2]], 1), mvp)
       ]
 
-      // 点归一化
+      // Homogeneous division
       for (const vec of v) {
         vec4.scale(vec, vec, 1 / vec[3])
       }
 
+      // Viewport transformation
       for (const vec of v) {
-        vec[0] = this.#width * (vec[0] + 1) / 2
-        vec[1] = this.#height * (vec[1] + 1) / 2
+        vec[0] = (1 - vec[0]) * this.#width / 2
+        vec[1] =  (1 - vec[1]) * this.#height / 2
         vec[2] = vec[2] * f1 + f2
       }
 
@@ -111,6 +112,8 @@ export default class Rasterizer {
     }
   }
 
+  // Bresenham's line drawing algorithm
+  // Code taken from a stack overflow answer: https://stackoverflow.com/a/16405254
   #drawLine(begin, end) {
     const x1 = begin[0]
     const y1 = begin[1]
@@ -189,7 +192,7 @@ export default class Rasterizer {
   }
 
   #getIndex(x, y) {
-    return this.#width * Math.floor(y) + Math.floor(x)
+    return this.#width * Math.floor(this.#height - 1 - y) + Math.floor(x)
   }
 
   #getNextId() {

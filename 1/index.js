@@ -15,6 +15,9 @@ const width = canvasEl.getAttribute('width')
 const height = canvasEl.getAttribute('height')
 let angle = 0
 
+// TODO: Implement this function
+// Create the model matrix for rotating the triangle around the arbitrary axis.
+// Then return it.
 function getModelMatrix(axis, angle) {
   angle = angle / 180 * Math.PI
   let [x, y, z] = axis
@@ -50,13 +53,19 @@ function getViewMatrix(cameraPosition) {
   return view
 }
 
+// TODO: Implement this function
+// Create the projection matrix for the given parameters.
+// Then return it.
 function getProjectionMatrix(fov, aspectRatio, near, far) {
+  // 相机向负 Z 轴方向看
+  near = -near
+  far = -far
   let projection = mat4.create()
   const fovHalfAngle = fov / 180 / 2 * Math.PI
   const t = near * Math.tan(fovHalfAngle)
   const r = t * aspectRatio
   const l = -r
-  const b = -r
+  const b = -t
 
   const perspective = new Matrix4(
     near, 0, 0, 0,
@@ -86,7 +95,7 @@ function getProjectionMatrix(fov, aspectRatio, near, far) {
 }
 
 function render(angle = 0) {
-  rasterizer.rasterizer(700, 700)
+  rasterizer.rasterizer(width, height)
   const cameraPosition = vec3.fromValues(0, 0, 5)
   const position = [
     vec3.fromValues(2, 0, -2),
