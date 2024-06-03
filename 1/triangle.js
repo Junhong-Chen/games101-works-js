@@ -11,21 +11,9 @@ export default class Triangle {
     return this.v[2]
   }
   constructor() {
-    this.v = [
-      vec3.fromValues(0, 0, 0),
-      vec3.fromValues(0, 0, 0),
-      vec3.fromValues(0, 0, 0)
-    ]
-    this.color = [
-      vec3.fromValues(0, 0, 0),
-      vec3.fromValues(0, 0, 0),
-      vec3.fromValues(0, 0, 0)
-    ]
-    this.textureCoords = [
-      vec2.fromValues(0, 0),
-      vec2.fromValues(0, 0),
-      vec2.fromValues(0, 0)
-    ]
+    this.v = []
+    this.color = []
+    this.textureCoords = []
     this.normal = []
   }
 

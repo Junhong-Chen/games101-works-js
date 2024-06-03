@@ -1,4 +1,5 @@
 import { vec3, mat4 } from "gl-matrix"
+import GUI from "lil-gui"
 import Rasterizer from "./rasterizer"
 
 // fromValues 方法的入参是按“列”顺序传入的，这里封装下改成按“行”传入
@@ -6,11 +7,10 @@ function Matrix4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30
   return mat4.fromValues(m00, m10, m20, m30, m01, m11, m21, m31, m02, m12, m22, m32, m03, m13, m23, m33)
 }
 
-const rasterizer = new Rasterizer({ MSAA: true })
-// 作业要求使用 CPU 模拟渲染器，所以这里使用 2d 上下文
 const ctx = canvasEl.getContext('2d')
 const width = canvasEl.getAttribute('width')
 const height = canvasEl.getAttribute('height')
+const rasterizer = new Rasterizer({ width, height })
 
 function getModelMatrix(axis, angle) {
   angle = angle / 180 * Math.PI
@@ -27,10 +27,10 @@ function getModelMatrix(axis, angle) {
 
   // Rodrigues 旋转公式
   const rotate = new Matrix4(
-    t * x * x + cos,     t * x * y - sin * z, t * x * z + sin * y, 0,
-    t * x * y + sin * z, t * y * y + cos,     t * y * z - sin * x, 0,
-    t * x * z - sin * y, t * y * z + sin * x, t * z * z + cos,     0,
-    0,                   0,                   0,                   1
+    t * x * x + cos, t * x * y - sin * z, t * x * z + sin * y, 0,
+    t * x * y + sin * z, t * y * y + cos, t * y * z - sin * x, 0,
+    t * x * z - sin * y, t * y * z + sin * x, t * z * z + cos, 0,
+    0, 0, 0, 1
   )
   return rotate
 }
@@ -85,8 +85,7 @@ function getProjectionMatrix(fov, aspectRatio, near, far) {
   return projection
 }
 
-(function render(angle = 0) {
-  rasterizer.rasterizer(width, height)
+function render(angle = 0, MSAA = false) {
   const cameraPosition = vec3.fromValues(0, 0, 5)
 
   const positions = [
@@ -118,19 +117,43 @@ function getProjectionMatrix(fov, aspectRatio, near, far) {
   rasterizer.setModel(getModelMatrix(vec3.fromValues(0, 0, 1), angle))
   rasterizer.setView(getViewMatrix(cameraPosition))
   rasterizer.setProjection(getProjectionMatrix(45, 1, 0.1, 50))
-  rasterizer.draw(positionId, indicesId, colorId, 'triangle')
+  rasterizer.draw(positionId, indicesId, colorId, MSAA)
 
   // 绘制
-  ctx.clearRect(0, 0, width, height)
-  ctx.fillStyle = 'black'
-  ctx.fillRect(0, 0, width, height)
-  for (let i = rasterizer.frameBuffers.length - 1; i > -1; i--) {
-    const pixel = rasterizer.frameBuffers[i]
-    if ((pixel[0] + pixel[1] + pixel[2]) !== 0) {
-      const y = Math.floor(i / width)
-      const x = i % width
-      ctx.fillStyle = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`
-      ctx.fillRect(x, y, 1, 1)
-    }
+  canvasDraw(rasterizer.frameBuffers)
+}
+
+function canvasDraw(data) {
+  const length = data.length
+  const imageData = ctx.createImageData(width, height)
+  for (var i = 0; i < length; i++) {
+    var index = i * 4
+    imageData.data[index] = data[i][0]
+    imageData.data[index + 1] = data[i][1]
+    imageData.data[index + 2] = data[i][2]
+    imageData.data[index + 3] = 255 // alpha
   }
-})()
+  ctx.putImageData(imageData, 0, 0)
+}
+
+let angle = 0
+const gui = new GUI()
+const guiParams = {
+  MSAA: false
+}
+gui.add(guiParams, 'MSAA').onChange((value) => {
+  render(angle, value)
+})
+
+window.addEventListener('keypress', function (e) {
+  if (e.code === 'KeyA') {
+    angle -= 1
+    render(angle, guiParams.MSAA)
+  }
+  if (e.code === 'KeyD') {
+    angle += 1
+    render(angle, guiParams.MSAA)
+  }
+})
+
+render(angle, guiParams.MSAA)

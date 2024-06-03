@@ -61,7 +61,7 @@ export default class Rasterizer {
 
   clear(colorBuffer = false, depthBuffer = false) {
     if (colorBuffer) {
-      this.#frameBuffers.fill(vec3.fromValues(0, 0, 0))
+      this.#frameBuffers.fill(vec3.create())
     }
     if (depthBuffer) {
       this.#depthBuffers.fill(Infinity)

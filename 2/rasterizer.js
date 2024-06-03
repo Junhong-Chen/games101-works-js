@@ -27,17 +27,13 @@ export default class Rasterizer {
     return this.#frameBuffers
   }
 
-  constructor({ MSAA }) {
-    this.#MSAA = MSAA
-  }
-
-  rasterizer(w, h) {
-    const count = w * h
-    this.#width = w
-    this.#height = h
+  constructor({ width, height }) {
+    const count = width * height
+    this.#width = width
+    this.#height = height
     this.#frameBuffers.length = count
     this.#depthBuffers.length = count
-    // MSAA 4x
+    // MSAA 2x
     this.#sampleFrameBuffers.length = count * 4
     this.#sampleDepthBuffers.length = count * 4
   }
@@ -108,8 +104,8 @@ export default class Rasterizer {
 
   clear({ colorBuffer = false, depthBuffer = false }) {
     if (colorBuffer) {
-      this.#frameBuffers.fill(vec3.fromValues(0, 0, 0))
-      this.#sampleFrameBuffers.fill(vec3.fromValues(0, 0, 0))
+      this.#frameBuffers.fill(vec3.create())
+      this.#sampleFrameBuffers.fill(vec3.create())
     }
     if (depthBuffer) {
       this.#depthBuffers.fill(Infinity)
@@ -117,10 +113,7 @@ export default class Rasterizer {
     }
   }
 
-  draw(positionBufferId, indicesBufferId, colorBufferId, type) {
-    if (type !== 'triangle') {
-      throw new Error('Drawing primitives other than triangle is not implemented yet!')
-    }
+  draw(positionBufferId, indicesBufferId, colorBufferId, MSAA) {
     const position = this.#positionBuffers.get(positionBufferId)
     const indices = this.#indicesBuffers.get(indicesBufferId)
     const color = this.#colorBuffers.get(colorBufferId)
@@ -160,11 +153,11 @@ export default class Rasterizer {
       triangle.setColor(1, ...color[i[1]])
       triangle.setColor(2, ...color[i[2]])
 
-      this.#rasterizeTriangle(triangle)
+      this.#rasterizeTriangle(triangle, MSAA)
     }
   }
 
-  #rasterizeTriangle(triangle) {
+  #rasterizeTriangle(triangle, MSAA) {
     const v = triangle.vector
     // TODO : Find out the bounding box of current triangle.
     const x1 = v[0][0], x2 = v[1][0], x3 = v[2][0], y1 = v[0][1], y2 = v[1][1], y3 = v[2][1]
@@ -178,7 +171,7 @@ export default class Rasterizer {
     for (let x = xMin; x < xMax; x++) {
       for (let y = yMin; y < yMax; y++) {
         let inside = false
-        if (this.#MSAA) {
+        if (MSAA) {
           for (const [i, p] of this.#superSamplePoints.entries())  {
             if (this.#insideTriangle(x + p[0], y + p[1], v)) {
               const [alpha, beta, gamma] = this.#computeBarycentric2D(x + p[0], y + p[1], triangle.v)
@@ -200,7 +193,7 @@ export default class Rasterizer {
               new Float32Array([x * 2, y * 2 + 1]),
               new Float32Array([x * 2 + 1, y * 2 + 1]),
             ]
-            let color = vec3.fromValues(0, 0, 0)
+            let color = vec3.create()
             for (const p of superSampleIndexs) {
               vec3.add(color, color, this.#sampleFrameBuffers[this.#getSampleIndex(...p)])
             }

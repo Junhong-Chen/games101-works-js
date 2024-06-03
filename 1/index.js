@@ -1,5 +1,5 @@
-import Rasterizer from "./rasterizer"
 import { vec3, mat4 } from "gl-matrix"
+import Rasterizer from "./rasterizer"
 
 // fromValues 方法的入参是按“列”顺序传入的，这里封装下改成按“行”传入
 function Matrix4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33) {
@@ -9,7 +9,6 @@ function Matrix4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30
 const rasterizer = new Rasterizer()
 
 const canvasEl = document.querySelector('#canvasEl')
-// 作业要求使用 CPU 模拟渲染器，所以这里使用 2d 上下文
 const ctx = canvasEl.getContext('2d')
 const width = canvasEl.getAttribute('width')
 const height = canvasEl.getAttribute('height')
@@ -113,21 +112,21 @@ function render(angle = 0) {
   rasterizer.draw(positionId, indicesId, 'triangle')
 
   // 绘制
-  ctx.clearRect(0, 0, width, height)
-  ctx.fillStyle = 'black'
-  ctx.fillRect(0, 0, width, height)
-  ctx.fillStyle = 'white'
-  for (let i = rasterizer.frameBuffers.length - 1; i > -1; i--) {
-    const pixel = rasterizer.frameBuffers[i]
-    if (pixel[0] !== 0) {
-      const y = Math.floor(i / width)
-      const x = i % width
-      ctx.fillRect(x, y, 1, 1)
-    }
-  }
+  canvasDraw(rasterizer.frameBuffers)
 }
 
-render(angle)
+function canvasDraw(data) {
+  const length = data.length
+  const imageData = ctx.createImageData(width, height)
+  for (var i = 0; i < length; i++) {
+    var index = i * 4
+    imageData.data[index] = data[i][0]
+    imageData.data[index + 1] = data[i][1]
+    imageData.data[index + 2] = data[i][2]
+    imageData.data[index + 3] = 255 // alpha
+  }
+  ctx.putImageData(imageData, 0, 0)
+}
 
 window.addEventListener('keypress', function(e) {
   if (e.code === 'KeyA') {
@@ -139,3 +138,5 @@ window.addEventListener('keypress', function(e) {
     render(angle)
   }
 })
+
+render(angle)
