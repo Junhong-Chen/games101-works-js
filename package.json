@@ -1,5 +1,6 @@
 {
-  "name": "games101-works-but-js",
+  "name": "games101-works-js",
+  "author": "Junhong",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +10,11 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^5.2.0",
-    "gl-matrix": "^3.4.3"
+    "gl-matrix": "^3.4.3",
+    "vite": "^5.2.0"
+  },
+  "dependencies": {
+    "lil-gui": "^0.19.2",
+    "webgl-obj-loader": "^2.0.8"
   }
 }

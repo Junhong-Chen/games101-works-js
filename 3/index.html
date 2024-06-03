@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>work-3</title>
+  <style>
+    article>p {
+      text-indent: 2ch;
+    }
+  </style>
+  <script src="https://docs.opencv.org/4.9.0/opencv.js"></script>
+</head>
+<body>
+  <article>
+    <p>在这次编程任务中，我们会进一步模拟现代图形技术。我们在代码中添加了 Object Loader(用于加载三维模型)，Vertex Shader 与 Fragment Shader，并且支持了纹理映射。</p>
+    <p>
+      <strong>而在本次实验中，你需要完成的任务是：</strong>
+    </p>
+    <ol>
+      <li>修改函数 rasterize_triangle(const Triangle& t) in rasterizer.cpp: 在此处实现与作业 2 类似的插值算法，实现法向量、颜色、纹理颜色的插值。</li>
+      <li>修改函数 get_projection_matrix() in main.cpp: 将你自己在之前的实验中实现的投影矩阵填到此处，此时你可以运行 ./Rasterizer output.png normal 来观察法向量实现结果。</li>
+      <li>修改函数 phong_fragment_shader() in main.cpp: 实现 Blinn-Phong 模型计算 Fragment Color。</li>
+      <li>修改函数 texture_fragment_shader() in main.cpp: 在实现 Blinn-Phong 的基础上，将纹理颜色视为公式中的 kd，实现 Texture Shading Fragment Shader。</li>
+      <li>修改函数 bump_fragment_shader() in main.cpp: 在实现 Blinn-Phong 的基础上，仔细阅读该函数中的注释，实现 Bump mapping。</li>
+      <li>修改函数 displacement_fragment_shader() in main.cpp: 在实现 Bump mapping 的基础上，实现 displacement mapping。</li>
+    </ol>
+  </article>
+  <canvas id="canvasEl" width="700" height="700"></canvas>
+  <script src="./index.js" type="module"></script>
+</body>
+</html>
