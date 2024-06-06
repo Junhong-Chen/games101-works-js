@@ -107,10 +107,6 @@ export default class Rasterizer {
   }
 
   draw(triangleList) {
-    // const position = this.#positionBuffers.get(positionBufferId)
-    // const indices = this.#indicesBuffers.get(indicesBufferId)
-    // const color = this.#colorBuffers.get(colorBufferId)
-
     const f1 = (50 - 0.1) / 2
     const f2 = (50 + 0.1) / 2
 

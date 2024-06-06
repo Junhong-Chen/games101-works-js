@@ -167,7 +167,6 @@ export default class Rasterizer {
     const yMax = Math.ceil(Math.min(Math.max(y1, y2, y3), this.#height))
 
     // iterate through the pixel and find if the current pixel is inside the triangle
-    
     for (let x = xMin; x < xMax; x++) {
       for (let y = yMin; y < yMax; y++) {
         let inside = false
