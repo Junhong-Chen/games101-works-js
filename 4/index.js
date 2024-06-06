@@ -1,9 +1,23 @@
+import GUI from "lil-gui"
+
 const canvasEl = document.querySelector('#canvasEl')
-const ctx = canvasEl.getContext('2d')
 const width = parseInt(canvasEl.getAttribute('width'))
 const height = parseInt(canvasEl.getAttribute('height'))
 const controlPoints = []
+const gui = new GUI()
+const guiParams = {
+  controlPointsCount: 4,
+  naiveBezier: true
+}
 let mat
+
+gui.add(guiParams, 'controlPointsCount', 3, 10, 1).onFinishChange(function() {
+  clearBezier()
+  if (mat) {
+    cv.imshow(canvasEl, mat)
+  }
+})
+gui.add(guiParams, 'naiveBezier')
 
 cv.onRuntimeInitialized = function() {
   mat = new cv.Mat(height, width, cv.CV_8UC3)
@@ -16,14 +30,15 @@ canvasEl.addEventListener('mousedown', function(event) {
   const y = event.clientY - rect.top
 
   console.log(`Left button of the mouse is clicked - position (${x}, ${y})`)
-  if (controlPoints.length >= 4) {
-    controlPoints.length = 0
-    mat.setTo(new cv.Scalar(0, 0, 0, 0))
+  if (controlPoints.length >= guiParams.controlPointsCount) {
+    clearBezier()
   }
   controlPoints.push(new cv.Point(x, y))
 
-  if (controlPoints.length === 4) {
-    naiveBezier(controlPoints, mat) // 作业框架提供参考的函数，仅限 4 个控制点
+  if (controlPoints.length === guiParams.controlPointsCount) {
+    if (guiParams.naiveBezier && controlPoints.length === 4) {
+      naiveBezier(controlPoints, mat) // 作业框架提供参考的函数，仅限 4 个控制点
+    }
     bezier(controlPoints, mat) // 要求实现绘制贝塞尔曲线的函数，不限制控制点数量
   }
   for(const point of controlPoints) {
@@ -37,6 +52,11 @@ canvasEl.addEventListener('mousedown', function(event) {
 // 简易的高斯加权算法
 function getWeight(distance) {
   return Math.exp(-distance * distance / 2)
+}
+
+function clearBezier() {
+  controlPoints.length = 0
+  mat.setTo(new cv.Scalar(0, 0, 0, 0))
 }
 
 function naiveBezier(points, mat) {
