@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>work-4</title>
+  <style>
+    article>p {
+      text-indent: 2ch;
+    }
+  </style>
+  <script src="https://docs.opencv.org/4.9.0/opencv.js"></script>
+</head>
+<body>
+  <article>
+    <p>Bézier 曲线是一种用于计算机图形学的参数曲线。在本次作业中，你需要实现 de Casteljau 算法来绘制由 4 个控制点表示的 Bézier 曲线 (当你正确实现该算法时，你可以支持绘制由更多点来控制的 Bézier 曲线)。</p>
+    <p>你需要修改的函数在提供的 main.cpp 文件中。</p>
+    <ul>
+      <li>
+        bezier：该函数实现绘制 Bézier 曲线的功能。它使用一个控制点序列和一个 OpenCV::Mat 对象作为输入，没有返回值。它会使 t 在 0 到 1 的范围内进行迭代，并在每次迭代中使 t 增加一个微小值。对于每个需要计算的 t，将调用另一个函数 recursive_bezier，然后该函数将返回在 Bézier 曲线上 t 处的点。最后，将返回的点绘制在 OpenCV::Mat 对象上。
+      </li>
+      <li>recursive_bezier：该函数使用一个控制点序列和一个浮点数 t 作为输入，实现 de Casteljau 算法来返回 Bézier 曲线上对应点的坐标。</li>
+    </ul>
+  </article>
+  <canvas id="canvasEl" width="700" height="700"></canvas>
+  <script src="./index.js" type="module"></script>
+</body>
+</html>
