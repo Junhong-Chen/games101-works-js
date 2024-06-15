@@ -258,8 +258,8 @@ export default class Renderer {
               vec3SameValue(
                 Math.pow(
                   Math.max(0, -vec3.dot(reflectionDirection, dir)),
-                  hitObj.specularExponent * light.intensity
-                )
+                  hitObj.specularExponent
+                ) * light.intensity
               )
             )
           }
