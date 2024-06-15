@@ -129,6 +129,7 @@ export default class Renderer {
     // Use this variable as the eye position to start your rays.
     const cameraPosition = vec3.create()
     let m = 0
+    
     for (let j = 0; j < height; ++j) {
       for (let i = 0; i < width; ++i) {
         // generate primary ray direction
@@ -165,7 +166,7 @@ export default class Renderer {
 
   updateProgress(progress) {
     const percentage = Math.max(0, Math.min(100, progress * 100)) // Clamp the value between 0 and 100
-    console.log(`${percentage.toFixed(1)}%`)
+    console.info(`%c${percentage.toFixed(1)}%`, 'color:dodgerblue')
   }
 
   // Implementation of the Whitted-style light transport algorithm (E [S*] (D|G) L)

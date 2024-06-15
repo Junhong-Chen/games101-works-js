@@ -20,7 +20,7 @@ const sphere0 = new Sphere({
 })
 
 const sphere1 = new Sphere({
-  center: vec3.fromValues(0.5, -.5, -8),
+  center: vec3.fromValues(.5, -.5, -8),
   radius: 1.5,
   ior: 1.5,
   materialType: MaterialType.REFLECTION_AND_REFRACTION,
