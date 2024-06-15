@@ -12,14 +12,20 @@ function rayTriangleIntersect(v0, v1, v2, orig, dir) {
   const S = vec3.sub(vec3.create(), orig, v0)
   const S1 = vec3.cross(vec3.create(), dir, E2)
   const S2 = vec3.cross(vec3.create(), S, E1)
-  const t = vec3.dot(S1, E1)
 
-  const tNear = vec3.dot(S2, E2) / t
-  const u = vec3.dot(S1, S) / t
-  const v = vec3.dot(S2, dir) / t
+  const result = vec3.scale(
+    vec3.create(),
+    vec3.fromValues(
+      vec3.dot(S2, E2),
+      vec3.dot(S1, S),
+      vec3.dot(S2, dir)
+    ),
+    1 / vec3.dot(S1, E1)
+  )
+  const [tNear, u, v] = result
 
-  // 这里的 u、v 表示重心坐标，1 - u - v = 0
-  if (tNear > 0 && v >= 0 && v <= 1 && u >= 0 && u <= 1 && (u + v) <= 1) {
+  // u、v 表示重心坐标
+  if (tNear > 0 && v >= 0 && u >= 0 && (u + v) <= 1) {
     return { tNear, u, v }
   }
 }

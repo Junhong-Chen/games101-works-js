@@ -15,12 +15,12 @@ const renderer = new Renderer()
 const sphere0 = new Sphere({
   center: vec3.fromValues(-1, 0, -12),
   radius: 2,
-  diffuseColor: vec3.fromValues(0.6, 0.7, 0.8),
+  diffuseColor: vec3.fromValues(.6, .7, .8),
   materialType: MaterialType.DIFFUSE_AND_GLOSSY,
 })
 
 const sphere1 = new Sphere({
-  center: vec3.fromValues(0.5, -0.5, -8),
+  center: vec3.fromValues(0.5, -.5, -8),
   radius: 1.5,
   ior: 1.5,
   materialType: MaterialType.REFLECTION_AND_REFRACTION,
