@@ -4,12 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>work-0</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    article {
+      width: 1024px;
+      padding: 4px 16px;
+      border: 2px solid #333;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    article>p {
+      margin: 12px 0;
+      text-indent: 2ch;
+    }
+  </style>
 </head>
 <body>
   <article>
     <p>
       给定一个点 P=(2,1), 将该点绕原点先逆时针旋转 45◦, 再平移 (1,2), 计算出变换后点的坐标（要求用齐次坐标进行计算）。
     </p>
+    <p id="coord-show"></p>
   </article>
   <script src="./index.js" type="module"></script>
 </body>

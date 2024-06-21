@@ -35,5 +35,5 @@ const P = vec3.fromValues(...p, 1)
 // )
 const M = mat3.multiply(mat3.create(), T, R)
 const pTransformed = vec3.transformMat3(vec3.create(), P, M)
-
-console.log('变换后点的坐标:', pTransformed)
+const showEl = document.querySelector('#coord-show')
+showEl.textContent = `变换后点的坐标：[${pTransformed.join(', ')}]`

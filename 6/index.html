@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>work-6</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    article {
+      width: 1024px;
+      padding: 4px 16px;
+      border: 2px solid #333;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    article>p {
+      margin: 12px 0;
+      text-indent: 2ch;
+    }
+  </style>
+</head>
+
+<body>
+  <article>
+    <p>
+      在之前的编程练习中，我们实现了基础的光线追踪算法，具体而言是光线传输、光线与三角形求交。我们采用了这样的方法寻找光线与场景的交点：遍历场景中的所有物体，判断光线是否与它相交。在场景中的物体数量不大时，该做法可以取得良好的结果，但当物体数量增多、模型变得更加复杂，该做法将会变得非常低效。因此，我们需要加速结构来加速求交过程。在本次练习中，我们重点关注物体划分算法 Bounding Volume Hierarchy (BVH)。本练习要求你实现 Ray-BoundingVolume 求交与 BVH 查找。
+    </p>
+    <p>首先，你需要从上一次编程练习中引用以下函数：</p>
+    <ul>
+      <li>
+        <strong>Render()</strong> in Renderer.cpp：将你的光线生成过程粘贴到此处，并且按照新框架更新相应调用的格式。
+      </li>
+      <li>
+        <strong>Triangle::getIntersection</strong> in Triangle.hpp：将你的光线-三角形相交函数粘贴到此处，并且按照新框架更新相应相交信息的格式。
+      </li>
+    </ul>
+    <p>在本次编程练习中，你需要实现以下函数：</p>
+    <ul>
+      <li>
+        <strong>IntersectP(const Ray& ray, const Vector3f& invDir, const std::array&lt;int, 3&gt;& dirIsNeg)</strong> in the Bounds3.hpp：这个函数的作用是判断包围盒 BoundingBox 与光线是否相交，你需要按照课程介绍的算法实现求交过程。
+      </li>
+      <li>
+        <strong>getIntersection(BVHBuildNode* node, const Ray ray)</strong> in BVH.cpp: 建立 BVH 之后，我们可以用它加速求交过程。该过程递归进行，你将在其中调用你实现的 Bounds3::IntersectP。
+      </li>
+    </ul>
+  </article>
+  <canvas id="canvasEl" width="1280" height="960"></canvas>
+  <script src="./index.js" type="module"></script>
+</body>
+
+</html>
