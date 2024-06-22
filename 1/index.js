@@ -8,7 +8,7 @@ function Matrix4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30
 
 const rasterizer = new Rasterizer()
 
-const canvasEl = document.querySelector('#canvasEl')
+const canvasEl = document.querySelector('#canvas-el')
 const ctx = canvasEl.getContext('2d')
 const width = canvasEl.getAttribute('width')
 const height = canvasEl.getAttribute('height')

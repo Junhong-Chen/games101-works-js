@@ -1,6 +1,6 @@
 import GUI from "lil-gui"
 
-const canvasEl = document.querySelector('#canvasEl')
+const canvasEl = document.querySelector('#canvas-el')
 const width = parseInt(canvasEl.getAttribute('width'))
 const height = parseInt(canvasEl.getAttribute('height'))
 const controlPoints = []

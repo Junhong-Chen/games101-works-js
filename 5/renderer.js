@@ -114,7 +114,9 @@ function trace(orig, dir, objects) {
 
 export default class Renderer {
   #timer = null
-  constructor() { }
+  constructor(canvasEl) {
+    this.canvasEl = canvasEl
+  }
 
   // The main render function. This where we iterate over all pixels in the image, generate
   // primary rays and cast these rays into the scene. The content of the framebuffer is
@@ -151,7 +153,7 @@ export default class Renderer {
   }
 
   draw(scene, data) {
-    const ctx = canvasEl.getContext('2d')
+    const ctx = this.canvasEl.getContext('2d')
     const length = data.length
     const imageData = ctx.createImageData(scene.width, scene.height)
     for (var i = 0; i < length; i++) {

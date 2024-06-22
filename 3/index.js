@@ -24,6 +24,7 @@ function loader(path) {
   })
 }
 
+const canvasEl = document.querySelector('#canvas-el')
 const ctx = canvasEl.getContext('2d')
 const width = parseInt(canvasEl.getAttribute('width'))
 const height = parseInt(canvasEl.getAttribute('height'))
@@ -448,10 +449,7 @@ gui.add(guiParams, 'bilinearInterpolation').onChange((value) => {
 })
 
 async function render(angle = 0, shaderType = SHADERS.NORMAL) {
-  const textures = mesh.textures
-  const vertices = mesh.vertices
-  const normals = mesh.vertexNormals
-  const indices = mesh.indices
+  const { textures, vertices, vertexNormals: normals, indices } = mesh
 
   const triangleList = []
   for (let i = 0; i < indices.length; i += 3) {

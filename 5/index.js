@@ -6,11 +6,12 @@ import Light from './light'
 import Renderer from './renderer'
 import { MaterialType } from './constant'
 
+const canvasEl = document.querySelector('#canvas-el')
 const width = parseInt(canvasEl.getAttribute('width'))
 const height = parseInt(canvasEl.getAttribute('height'))
 
 const scene = new Scene({width, height})
-const renderer = new Renderer()
+const renderer = new Renderer(canvasEl)
 
 const sphere0 = new Sphere({
   center: vec3.fromValues(-1, 0, -12),
