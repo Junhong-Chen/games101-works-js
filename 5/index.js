@@ -10,7 +10,7 @@ const canvasEl = document.querySelector('#canvas-el')
 const width = parseInt(canvasEl.getAttribute('width'))
 const height = parseInt(canvasEl.getAttribute('height'))
 
-const scene = new Scene({width, height})
+const scene = new Scene({ width, height })
 const renderer = new Renderer(canvasEl)
 
 const sphere0 = new Sphere({

@@ -113,14 +113,13 @@ function trace(orig, dir, objects) {
 }
 
 export default class Renderer {
-  #timer = null
   constructor(canvasEl) {
     this.canvasEl = canvasEl
   }
 
-  // The main render function. This where we iterate over all pixels in the image, generate
-  // primary rays and cast these rays into the scene. The content of the framebuffer is
-  // saved to a file.
+  // The main render function.
+  // This where we iterate over all pixels in the image, generate primary rays and cast these rays into the scene.
+  // The content of the framebuffer is saved to a file.
   render(scene) {
     const { width, height, fov } = scene
     const frameBuffer = new Array(width * height)
@@ -138,9 +137,8 @@ export default class Renderer {
         // TODO: Find the x and y positions of the current pixel to get the direction vector that passes through it.
         // Also, don't forget to multiply both of them with the variable *scale*, and x (horizontal) variable with the *imageAspectRatio*
         // 将像素坐标转换为归一化设备坐标
-        // width - 1 和 height - 1 是为了将像素索引范围 [0, width - 1] 和 [0, height - 1] 转换到 [0, 1]
-        const x = (2 * (i + 0.5) / (width - 1) - 1) * imageAspectRatio * scale
-        const y = (1 - 2 * (j + 0.5) / (height - 1)) * scale
+        const x = (2 * (i + 0.5) / width - 1) * imageAspectRatio * scale
+        const y = (1 - 2 * (j + 0.5) / height) * scale
         const dir = vec3.normalize(vec3.create(), vec3.fromValues(x, y, -1)) // Don't forget to normalize this direction!
 
         frameBuffer[m++] = this.castRay(cameraPosition, dir, scene, 0)
