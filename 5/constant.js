@@ -1,5 +1,0 @@
-export const MaterialType = {
-  DIFFUSE_AND_GLOSSY: 0,
-  REFLECTION_AND_REFRACTION: 1,
-  REFLECTION: 2
-}

@@ -1,5 +1,5 @@
 import { vec3 } from "gl-matrix"
-import { MaterialType } from './constant'
+import { MaterialType } from './object'
 
 const EPSILON = 1e-5 // 用于浮点比较，避免计算误差
 

@@ -1,5 +1,10 @@
-import { MaterialType } from './constant'
 import { vec3 } from 'gl-matrix'
+
+export const MaterialType = {
+  DIFFUSE_AND_GLOSSY: 0,
+  REFLECTION_AND_REFRACTION: 1,
+  REFLECTION: 2
+}
 
 export default class Object3D {
   constructor ({

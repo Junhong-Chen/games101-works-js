@@ -4,7 +4,7 @@ import Sphere from './sphere'
 import MeshTriangle from './triangle'
 import Light from './light'
 import Renderer from './renderer'
-import { MaterialType } from './constant'
+import { MaterialType } from './object'
 
 const canvasEl = document.querySelector('#canvas-el')
 const width = parseInt(canvasEl.getAttribute('width'))
