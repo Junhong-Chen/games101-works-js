@@ -4,7 +4,6 @@ export default class Scene {
   #objects = []
   #lights = []
   #maxDepth = 5 // 最大递归深度，用于光线追踪中的最大反射/折射次数
-  #epsilon = .00001 // 用于浮点比较，避免计算误差
 
   get objects() {
     return this.#objects
@@ -14,9 +13,6 @@ export default class Scene {
   }
   get maxDepth() {
     return this.#maxDepth
-  }
-  get epsilon() {
-    return this.#epsilon
   }
 
   constructor({

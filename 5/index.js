@@ -55,4 +55,5 @@ scene.add(mesh)
 scene.add(new Light({ position: vec3.fromValues(-20, 70, 20), intensity: .5 }))
 scene.add(new Light({ position: vec3.fromValues(30, 50, -12), intensity: .5 }))
 
+// 因为浮点数精度问题可能会造成渲染出的结果有噪点
 renderer.render(scene)

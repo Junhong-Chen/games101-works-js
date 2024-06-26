@@ -24,14 +24,14 @@ export default class Renderer {
     const cameraPosition = vec3.fromValues(-1, 5, 10)
     let m = 0
     
-    for (let j = 0; j < height; ++j) {
-      for (let i = 0; i < width; ++i) {
+    for (let j = 0; j < height; j++) {
+      for (let i = 0; i < width; i++) {
         // generate primary ray direction
         // TODO: Find the x and y positions of the current pixel to get the direction vector that passes through it.
         // Also, don't forget to multiply both of them with the variable *scale*, and x (horizontal) variable with the *imageAspectRatio*
         // 将像素坐标转换为归一化设备坐标
         const x = (2 * (i + 0.5) / width - 1) * imageAspectRatio * scale
-        const y = (1 - 2 * (j + 0.5) / height) * scale
+        const y = -(2 * (j + 0.5) / height - 1) * scale
         const dir = vec3.normalize(vec3.create(), vec3.fromValues(x, y, -1)) // Don't forget to normalize this direction!
         const ray = new Ray(cameraPosition, dir) // 以相机为原点，到任一屏幕像素的光线
 

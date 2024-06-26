@@ -25,7 +25,7 @@ function rayTriangleIntersect(v0, v1, v2, orig, dir) {
   const [tNear, u, v] = result
 
   // u、v 表示重心坐标
-  if (tNear > 0 && v >= 0 && u >= 0 && (u + v) <= 1) {
+  if (tNear >= 0 && v >= 0 && u >= 0 && (u + v) <= 1) {
     return { tNear, u, v }
   }
 }

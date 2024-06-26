@@ -1,6 +1,8 @@
 import { vec3 } from "gl-matrix"
 import { MaterialType } from './constant'
 
+const EPSILON = 1e-5 // 用于浮点比较，避免计算误差
+
 function vec3SameValue(value) {
   return vec3.fromValues(value, value, value)
 }
@@ -131,14 +133,14 @@ export default class Renderer {
     const cameraPosition = vec3.create()
     let m = 0
     
-    for (let j = 0; j < height; ++j) {
-      for (let i = 0; i < width; ++i) {
+    for (let j = 0; j < height; j++) {
+      for (let i = 0; i < width; i++) {
         // generate primary ray direction
         // TODO: Find the x and y positions of the current pixel to get the direction vector that passes through it.
         // Also, don't forget to multiply both of them with the variable *scale*, and x (horizontal) variable with the *imageAspectRatio*
         // 将像素坐标转换为归一化设备坐标
         const x = (2 * (i + 0.5) / width - 1) * imageAspectRatio * scale
-        const y = (1 - 2 * (j + 0.5) / height) * scale
+        const y = -(2 * (j + 0.5) / height - 1) * scale
         const dir = vec3.normalize(vec3.create(), vec3.fromValues(x, y, -1)) // Don't forget to normalize this direction!
 
         frameBuffer[m++] = this.castRay(cameraPosition, dir, scene, 0)
@@ -201,8 +203,8 @@ export default class Renderer {
       const { tNear, index, uv, hitObj } = payload
       const hitPoint = vec3.add(vec3.create(), orig, vec3.scale(vec3.create(), dir, tNear))
       const { normal: N, st } = hitObj.getSurfaceProperties({ index, uv, hitPoint })
-      const origA = vec3.add(vec3.create(), hitPoint, vec3.scale(vec3.create(), N, scene.epsilon))
-      const origB = vec3.sub(vec3.create(), hitPoint, vec3.scale(vec3.create(), N, scene.epsilon))
+      const origA = vec3.add(vec3.create(), hitPoint, vec3.scale(vec3.create(), N, EPSILON))
+      const origB = vec3.sub(vec3.create(), hitPoint, vec3.scale(vec3.create(), N, EPSILON))
 
       switch (hitObj.materialType) {
         case MaterialType.REFLECTION_AND_REFRACTION: {
