@@ -29,14 +29,14 @@ const bunny = new Mesh(bunnyData)
 const scene = new Scene({ width, height })
 const renderer = new Renderer(canvasEl)
 
+const gui = new GUI()
+const guiParams = {
+  SAH: false,
+}
+
 scene.add(bunny)
 scene.add(new Light({ position: vec3.fromValues(-20, 70, 20), intensity: 1 }))
 scene.add(new Light({ position: vec3.fromValues(20, 70, 20), intensity: 1 }))
-
-function buildBVH(SAH) {
-  bunny.buildBVH({ SAH })
-  scene.buildBVH({ SAH })
-}
 
 function render() {
   const start = new Date()
@@ -50,16 +50,13 @@ function render() {
   console.log(`Render complete: \nTime Taken: ${hrs} hrs, ${mins} mins, ${secs} secs\n`)
 }
 
-buildBVH(false)
+scene.buildBVH({ SAH: false })
 render()
 
-const gui = new GUI()
-const guiParams = {
-  SAH: false,
-}
 gui.add(guiParams, 'SAH').onChange(SAH => {
-  bunny.buildBVH({ SAH })
+  renderer.clear(scene)
+
   scene.buildBVH({ SAH })
 
-  render()
+  setTimeout(() => render(), null)
 })

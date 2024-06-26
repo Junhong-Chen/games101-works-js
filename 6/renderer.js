@@ -58,6 +58,11 @@ export default class Renderer {
     ctx.putImageData(imageData, 0, 0)
   }
 
+  clear(scene) { 
+    const ctx = this.canvasEl.getContext('2d')
+    ctx.clearRect(0, 0, scene.width, scene.height)
+  }
+
   updateProgress(progress) {
     const percentage = Math.max(0, Math.min(100, progress * 100)) // Clamp the value between 0 and 100
     console.info(`%c${percentage.toFixed(1)}%`, 'color:dodgerblue')

@@ -5,31 +5,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>work-6</title>
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    article {
-      width: 1024px;
-      padding: 4px 16px;
-      border: 2px solid #333;
-      border-radius: 8px;
-      margin-bottom: 8px;
-    }
-    article>p {
-      margin: 12px 0;
-      text-indent: 2ch;
-    }
-  </style>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
   <article>
+    <h4>总览</h4>
     <p>
       在之前的编程练习中，我们实现了基础的光线追踪算法，具体而言是光线传输、光线与三角形求交。我们采用了这样的方法寻找光线与场景的交点：遍历场景中的所有物体，判断光线是否与它相交。在场景中的物体数量不大时，该做法可以取得良好的结果，但当物体数量增多、模型变得更加复杂，该做法将会变得非常低效。因此，我们需要加速结构来加速求交过程。在本次练习中，我们重点关注物体划分算法 Bounding Volume Hierarchy (BVH)。本练习要求你实现 Ray-BoundingVolume 求交与 BVH 查找。
     </p>
+    <h4>代码框架</h4>
     <p>首先，你需要从上一次编程练习中引用以下函数：</p>
     <ul>
       <li>
@@ -48,6 +33,28 @@
         <strong>getIntersection(BVHBuildNode* node, const Ray ray)</strong> in BVH.cpp: 建立 BVH 之后，我们可以用它加速求交过程。该过程递归进行，你将在其中调用你实现的 Bounds3::IntersectP。
       </li>
     </ul>
+    <p>我们修改了代码框架中的如下内容：</p>
+    <ul>
+      <li>
+        <strong>Material.hpp：</strong>我们从将材质参数拆分到了一个单独的类中，现在每个物体实例都可以拥有自己的材质。
+      </li>
+      <li>
+        <strong>Intersection.hpp：</strong>这个数据结构包含了相交相关的信息。
+      </li>
+      <li>
+        <strong>Ray.hpp：</strong>光线类，包含一条光的源头、方向、传递时间 t 和范围 range。
+      </li>
+      <li>
+        <strong>Bounds3.hpp：</strong>包围盒类，每个包围盒可由 pMin 和 pMax 两点描述（请思考为什么）。Bounds3::Union 函数的作用是将两个包围盒并成更大的包围盒。与材质一样，场景中的每个物体实例都有自己的包围盒。
+      </li>
+      <li>
+        <strong>BVH.hpp：</strong>BVH 加速类。场景 scene 拥有一个 BVHAccel 实例。从根节点开始，我们可以递归地从物体列表构造场景的 BVH。
+      </li>
+    </ul>
+    <h4>拓展</h4>
+    <p>
+      <strong>SAH 查找：</strong>自学 SAH(Surface Area Heuristic)，正确实现 SAH 加速，并且提交结果图片，并在 README.md 中说明 SVH 的实现方法，并对比 BVH、SVH 的时间开销。(可参考 <a target="_blank" href="http://15462.courses.cs.cmu.edu/fall2015/lecture/acceleration/slide_024">SAH</a>，也可以查找其他资料)。
+    </p>
   </article>
   <canvas id="canvas-el" width="1280" height="960"></canvas>
   <script src="./index.js" type="module"></script>

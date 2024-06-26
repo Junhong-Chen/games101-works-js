@@ -142,6 +142,9 @@ export default class Scene {
   buildBVH({ SAH = false }) {
     console.log(" - Generating BVH...")
     this.#bvh = new BVHAccel({ primitives: this.#objects, SAH })
+    for (const obj of this.#objects) {
+      if (obj.constructor.name === 'Mesh') obj.buildBVH({ SAH })
+    }
   }
   
   intersect(ray) {
