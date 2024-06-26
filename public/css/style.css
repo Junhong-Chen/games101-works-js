@@ -2,18 +2,32 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-size: 16px;
   background-color: #333;
 }
 article {
+  position: relative;
   width: 1024px;
-  padding: 4px 16px;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  color: white;
+  padding: .25em 1em;
+  border-radius: .5em;
+  margin-bottom: .5em;
+  background: linear-gradient(-150deg, transparent 1.7em, lightgrey 0);
+}
+article::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: linear-gradient(to left bottom, transparent 50%, hsla(0, 0%, 0%, .2) 0, hsla(0, 0%, 0%, .4)) 100% 0 no-repeat;
+  width: 2em;
+  height: 3.6em;
+  transform: translateY(-1.66em) rotate(-30deg);
+  transform-origin: bottom right;
+  border-bottom-left-radius: inherit;
+  box-shadow: -.3em .3em .4em -.1em hsla(0, 0%, 0%, .15);
 }
 article>p, article>h4 {
-  margin: 12px 0;
+  margin: .75em 0;
 }
 article>p {
   text-indent: 2ch;
