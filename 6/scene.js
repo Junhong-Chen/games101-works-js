@@ -1,5 +1,5 @@
 import { vec3 } from "gl-matrix"
-import BVHAccel from "./BVHAccel"
+import BVH from "./BVH"
 import Ray from "./ray"
 import { MaterialType } from './material'
 
@@ -141,7 +141,7 @@ export default class Scene {
 
   buildBVH({ SAH = false }) {
     console.log(" - Generating BVH...")
-    this.#bvh = new BVHAccel({ primitives: this.#objects, SAH })
+    this.#bvh = new BVH({ primitives: this.#objects, SAH })
     for (const obj of this.#objects) {
       if (obj.constructor.name === 'Mesh') obj.buildBVH({ SAH })
     }

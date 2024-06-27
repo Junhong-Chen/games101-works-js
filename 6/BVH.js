@@ -199,7 +199,6 @@ export default class BVHAccel {
       return new Intersection()
     }
 
-
     if (!node.left && !node.right) { // 如果当前节点是叶子节点
       return node.object.getIntersection(ray)
     }
@@ -207,6 +206,6 @@ export default class BVHAccel {
     const hitLeft = this.getIntersection(node.left, ray)
     const hitRight = this.getIntersection(node.right, ray)
 
-    return hitLeft.distance < hitRight.distance ? hitLeft : hitRight;
+    return hitLeft.distance < hitRight.distance ? hitLeft : hitRight
   }
 }
