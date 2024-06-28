@@ -1,5 +1,5 @@
 import { vec2, vec3 } from "gl-matrix"
-import BVH from "./BVH"
+import BVHAccel from "./BVH"
 import Object3D from "./object"
 import Material from './material'
 import Bounds3 from "./bounds3"
@@ -116,11 +116,11 @@ export class Mesh extends Object3D {
     this.boundingBox = new Bounds3(minVert, maxVert)
   }
   
-  buildBVH({ SAH = false }) {
+  buildBVH({ splitMethod }) {
     console.log(" - Generating BVH...")
-    this.#bvh = new BVH({
+    this.#bvh = new BVHAccel({
       primitives: this.#triangles.map(triangle => triangle),
-      SAH
+      splitMethod
     })
   }
 

@@ -9,7 +9,7 @@ export default class Rasterizer {
   #indicesBuffers = new Map()
   #colorBuffers = new Map()
   #normalBuffers = new Map()
-  #frameBuffers = []
+  #framebuffers = []
   #depthBuffers = []
   #width
   #height
@@ -19,15 +19,15 @@ export default class Rasterizer {
   #vertexShader
   #cameraPosition
 
-  get frameBuffers() {
-    return this.#frameBuffers
+  get framebuffers() {
+    return this.#framebuffers
   }
 
   constructor({ width, height, cameraPosition }) {
     const count = width * height
     this.#width = width
     this.#height = height
-    this.#frameBuffers.length = count
+    this.#framebuffers.length = count
     this.#depthBuffers.length = count
     this.#cameraPosition = cameraPosition
   }
@@ -72,7 +72,7 @@ export default class Rasterizer {
     const [x, y] = point
     if (x >= 0 && x <= this.#width && y >= 0 && y <= this.#height) {
       const i = this.#getIndex(x, y)
-      this.#frameBuffers[i] = color
+      this.#framebuffers[i] = color
     }
   }
 
@@ -99,7 +99,7 @@ export default class Rasterizer {
 
   clear({ colorBuffer = false, depthBuffer = false }) {
     if (colorBuffer) {
-      this.#frameBuffers.fill(vec3.create())
+      this.#framebuffers.fill(vec3.create())
     }
     if (depthBuffer) {
       this.#depthBuffers.fill(Infinity)

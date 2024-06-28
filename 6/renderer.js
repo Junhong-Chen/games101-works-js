@@ -15,7 +15,7 @@ export default class Renderer {
   // The content of the framebuffer is saved to a file.
   render(scene) {
     const { width, height, fov } = scene
-    const frameBuffer = new Array(width * height)
+    const framebuffer = new Array(width * height)
 
     const scale = Math.tan(deg2rad(fov * 0.5))
     const imageAspectRatio = scene.width / scene.height
@@ -35,13 +35,13 @@ export default class Renderer {
         const dir = vec3.normalize(vec3.create(), vec3.fromValues(x, y, -1)) // Don't forget to normalize this direction!
         const ray = new Ray(cameraPosition, dir) // 以相机为原点，到任一屏幕像素的光线
 
-        frameBuffer[m++] = scene.castRay(ray, 0)
+        framebuffer[m++] = scene.castRay(ray, 0)
       }
       this.updateProgress((j + 1) / height)
     }
 
     // 绘制
-    this.draw(scene, frameBuffer)
+    this.draw(scene, framebuffer)
   }
 
   draw(scene, data) {

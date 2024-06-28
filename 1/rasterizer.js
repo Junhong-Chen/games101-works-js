@@ -7,14 +7,14 @@ export default class Rasterizer {
   #projection
   #positionBuffers = new Map()
   #indicesBuffers = new Map()
-  #frameBuffers = []
+  #framebuffers = []
   #depthBuffers = []
   #width
   #height
   #nextId = 0
 
-  get frameBuffers() {
-    return this.#frameBuffers
+  get framebuffers() {
+    return this.#framebuffers
   }
 
   constructor() {
@@ -23,7 +23,7 @@ export default class Rasterizer {
   rasterizer(w, h) {
     this.#width = w
     this.#height = h
-    this.#frameBuffers.length = (w * h)
+    this.#framebuffers.length = (w * h)
     this.#depthBuffers.length = (w * h)
   }
 
@@ -55,13 +55,13 @@ export default class Rasterizer {
     const [x, y] = point
     if (x >= 0 && x <= this.#width && y >= 0 && y <= this.#height) {
       const i = this.#getIndex(x, y)
-      this.#frameBuffers[i] = color
+      this.#framebuffers[i] = color
     }
   }
 
   clear(colorBuffer = false, depthBuffer = false) {
     if (colorBuffer) {
-      this.#frameBuffers.fill(vec3.create())
+      this.#framebuffers.fill(vec3.create())
     }
     if (depthBuffer) {
       this.#depthBuffers.fill(Infinity)

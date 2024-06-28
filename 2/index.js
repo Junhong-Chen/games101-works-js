@@ -121,7 +121,7 @@ function render(angle = 0, MSAA = false) {
   rasterizer.draw(positionId, indicesId, colorId, MSAA)
 
   // 绘制
-  canvasDraw(rasterizer.frameBuffers)
+  canvasDraw(rasterizer.framebuffers)
 }
 
 function canvasDraw(data) {

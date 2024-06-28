@@ -11,14 +11,16 @@ export class BVHBuildNode {
 }
 
 export default class BVHAccel {
-  #SAH
+  static SplitMethod = {
+    NAIVE: 'NAIVE',
+    SAH: 'SAH'
+  }
 
-  constructor({ primitives, maxPrimsInNode = 1, splitMethod = 'NAIVE', SAH = false }) {
+  constructor({ primitives, maxPrimsInNode = 1, splitMethod = BVHAccel.SplitMethod.NAIVE }) {
     this.maxPrimsInNode = Math.min(255, maxPrimsInNode)
     this.splitMethod = splitMethod
     // 初始化 primitives 列表
     this.primitives = primitives
-    this.#SAH = SAH
 
     if (primitives.length === 0) {
       this.root = null
@@ -66,50 +68,41 @@ export default class BVHAccel {
       const dim = centroidBounds.maxExtent()
       let index
       let B // 分割数量
-            
-      switch (dim) {
-        case 0:
-          objects.sort((a, b) => a.getBounds().centroid()[0] - b.getBounds().centroid()[0])
-          break
-        case 1:
-          objects.sort((a, b) => a.getBounds().centroid()[1] - b.getBounds().centroid()[1])
-          break
-        case 2:
-          objects.sort((a, b) => a.getBounds().centroid()[2] - b.getBounds().centroid()[2])
-          break
-      }
 
-      if (this.#SAH) {
-        B = 12
-        const SN = centroidBounds.surfaceArea()
-        let minCost = Infinity
+      objects.sort((a, b) => a.getBounds().centroid()[dim] - b.getBounds().centroid()[dim])
 
-        for (let i = 1; i < B; ++i) {
-          const mid = Math.floor(objects.length * i / B)
-          const leftshapes = objects.slice(0, mid)
-          const rightshapes = objects.slice(mid)
-  
-          let leftBounds = new Bounds3()
-          leftshapes.forEach(object => leftBounds = leftBounds.union(object.getBounds().centroid()))
-  
-          let rightBounds = new Bounds3()
-          rightshapes.forEach(object => rightBounds = rightBounds.union(object.getBounds().centroid()))
-  
-          const SA = leftBounds.surfaceArea()
-          const SB = rightBounds.surfaceArea()
-          const cost = (leftshapes.length * SA + rightshapes.length * SB) / SN
-  
-          if (cost < minCost) {
-            index = i
-            minCost = cost
+      switch (this.splitMethod) {
+        case BVHAccel.SplitMethod.SAH:
+          B = 12
+          const SN = centroidBounds.surfaceArea()
+          let minCost = Infinity
+
+          for (let i = 1; i < B; ++i) {
+            const mid = Math.floor(objects.length * i / B)
+            const leftshapes = objects.slice(0, mid)
+            const rightshapes = objects.slice(mid)
+
+            let leftBounds = new Bounds3()
+            leftshapes.forEach(object => leftBounds = leftBounds.union(object.getBounds().centroid()))
+
+            let rightBounds = new Bounds3()
+            rightshapes.forEach(object => rightBounds = rightBounds.union(object.getBounds().centroid()))
+
+            const SA = leftBounds.surfaceArea()
+            const SB = rightBounds.surfaceArea()
+            const cost = (leftshapes.length * SA + rightshapes.length * SB) / SN
+
+            if (cost < minCost) {
+              index = i
+              minCost = cost
+            }
           }
-        }
-
-      } else {
-        index = 1
-        B = 2
+          break
+        case BVHAccel.SplitMethod.NAIVE:
+          index = 1
+          B = 2
+          break
       }
-
       const middle = Math.floor(objects.length * index / B)
       const leftShapes = objects.slice(0, middle)
       const rightShapes = objects.slice(middle)

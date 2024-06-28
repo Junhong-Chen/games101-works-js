@@ -112,7 +112,7 @@ function render(angle = 0) {
   rasterizer.draw(positionId, indicesId, 'triangle')
 
   // 绘制
-  canvasDraw(rasterizer.frameBuffers)
+  canvasDraw(rasterizer.framebuffers)
 }
 
 function canvasDraw(data) {

@@ -28,7 +28,7 @@ export default class Material {
     this.#type = type
     this.#color = color
     this.#emission = emission
-    this.ior = 1.0 // 默认折射率
+    this.ior = 1 // 默认折射率
     this.kd = 0.8 // 默认漫反射系数
     this.ks = 0.2 // 默认镜面反射系数
     this.specularExponent = 25 // 默认高光指数

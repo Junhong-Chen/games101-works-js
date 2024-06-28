@@ -508,7 +508,7 @@ async function render(angle = 0, shaderType = SHADERS.NORMAL) {
   rasterizer.setProjection(getProjectionMatrix(45, 1, 0.1, 50))
   rasterizer.draw(triangleList)
 
-  canvasDraw(rasterizer.frameBuffers)
+  canvasDraw(rasterizer.framebuffers)
 }
 
 function canvasDraw(data) {

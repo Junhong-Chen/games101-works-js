@@ -5,6 +5,7 @@ import Light from "./light"
 import Scene from "./scene"
 import { Mesh } from "./triangle"
 import Renderer from "./renderer"
+import BVHAccel from "./BVH"
 
 function loader(path) {
   return new Promise((resolve, reject) => {
@@ -31,7 +32,7 @@ const renderer = new Renderer(canvasEl)
 
 const gui = new GUI()
 const guiParams = {
-  SAH: false,
+  splitMethod: BVHAccel.SplitMethod.NAIVE,
 }
 
 scene.add(bunny)
@@ -50,13 +51,13 @@ function render() {
   console.log(`Render complete: \nTime Taken: ${hrs} hrs, ${mins} mins, ${secs} secs\n`)
 }
 
-scene.buildBVH({ SAH: false })
+scene.buildBVH({ splitMethod: BVHAccel.SplitMethod.NAIVE })
 render()
 
-gui.add(guiParams, 'SAH').onChange(SAH => {
+gui.add(guiParams, 'splitMethod', BVHAccel.SplitMethod).onChange(splitMethod => {
   renderer.clear(scene)
 
-  scene.buildBVH({ SAH })
+  scene.buildBVH({ splitMethod })
 
   setTimeout(() => render(), null)
 })

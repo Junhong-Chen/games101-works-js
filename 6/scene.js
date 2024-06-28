@@ -1,5 +1,5 @@
 import { vec3 } from "gl-matrix"
-import BVH from "./BVH"
+import BVHAccel from "./BVH"
 import Ray from "./ray"
 import { MaterialType } from './material'
 
@@ -88,9 +88,6 @@ function reflect(I, N) {
  * @method trace
  * @param {Ray} ray
  * @param {Array} objects
- * @param {number} tNear
- * @param {number} index
- * @param {Object} hitObject
  */
 function trace(ray, objects) {
   let result = null
@@ -103,8 +100,6 @@ function trace(ray, objects) {
   }
   return result
 }
-
-const EPSILON = 1e-5 // 用于浮点比较，避免计算误差
 
 export default class Scene {
   #objects = []
@@ -139,11 +134,11 @@ export default class Scene {
     }
   }
 
-  buildBVH({ SAH = false }) {
+  buildBVH({ splitMethod }) {
     console.log(" - Generating BVH...")
-    this.#bvh = new BVH({ primitives: this.#objects, SAH })
+    this.#bvh = new BVHAccel({ primitives: this.#objects, splitMethod })
     for (const obj of this.#objects) {
-      if (obj.constructor.name === 'Mesh') obj.buildBVH({ SAH })
+      if (obj.constructor.name === 'Mesh') obj.buildBVH({ splitMethod })
     }
   }
   
@@ -183,8 +178,8 @@ export default class Scene {
     if (happened) {
       const hitPoint = vec3.clone(coords)
       const { normal: N, st } = hitObject.getSurfaceProperties({ index, uv, hitPoint })
-      const origA = vec3.add(vec3.create(), hitPoint, vec3.scale(vec3.create(), N, EPSILON))
-      const origB = vec3.sub(vec3.create(), hitPoint, vec3.scale(vec3.create(), N, EPSILON))
+      const origA = vec3.add(vec3.create(), hitPoint, vec3.scale(vec3.create(), N, Number.EPSILON))
+      const origB = vec3.sub(vec3.create(), hitPoint, vec3.scale(vec3.create(), N, Number.EPSILON))
   
       switch (material.type) {
         case MaterialType.REFLECTION_AND_REFRACTION: {
