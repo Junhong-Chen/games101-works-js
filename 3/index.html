@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作业-3</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://docs.opencv.org/4.9.0/opencv.js"></script>
+  <script type="module" crossorigin src="/assets/work3-C5_va5zH.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="modulepreload" crossorigin href="/assets/webgl-obj-loader.min-C5sT1AXD.js">
+  <link rel="modulepreload" crossorigin href="/assets/lil-gui.esm-DNkUmkFf.js">
+  <link rel="modulepreload" crossorigin href="/assets/vec3-DxJeS3HW.js">
+  <link rel="modulepreload" crossorigin href="/assets/vec4-DVpAb33O.js">
+  <link rel="modulepreload" crossorigin href="/assets/vec2-AJwhbUHB.js">
+  <link rel="modulepreload" crossorigin href="/assets/mat3-TIoIkjJn.js">
+</head>
+
+<body>
+  <article>
+    <h3>总览</h3>
+    <p>在这次编程任务中，我们会进一步模拟现代图形技术。我们在代码中添加了 Object Loader(用于加载三维模型)，Vertex Shader 与 Fragment Shader，并且支持了纹理映射。</p>
+    <h3>代码框架</h3>
+    <p>
+      在本次实验中，你需要修改如下函数：
+    </p>
+    <ol>
+      <li>
+        <strong>rasterize_triangle(const Triangle& t)</strong> in rasterizer.cpp：在此处实现与作业 2 类似的插值算法，实现法向量、颜色、纹理颜色的插值。
+      </li>
+      <li>
+        <strong>get_projection_matrix()</strong> in main.cpp：将你自己在之前的实验中实现的投影矩阵填到此处，此时你可以运行 ./Rasterizer output.png
+        normal 来观察法向量实现结果。
+      </li>
+      <li>
+        <strong>phong_fragment_shader()</strong> in main.cpp：实现 Blinn-Phong 模型计算 Fragment Color。
+      </li>
+      <li>
+        <strong>texture_fragment_shader()</strong> in main.cpp：<strong>在实现 Blinn-Phong 的基础上</strong>，将纹理颜色视为公式中的 kd，实现
+        Texture Shading Fragment Shader。
+      </li>
+      <li>
+        <strong>bump_fragment_shader()</strong> in main.cpp：<strong>在实现 Blinn-Phong 的基础上</strong>，仔细阅读该函数中的注释，实现 Bump
+        mapping。
+      </li>
+      <li>
+        <strong>displacement_fragment_shader()</strong> in main.cpp：<strong>在实现 Bump mapping 的基础上</strong>，实现
+        displacement mapping。
+      </li>
+    </ol>
+    <p>相比上次实验，我们对框架进行了如下修改：</p>
+    <ul>
+      <li>
+        我们引入了一个第三方 .obj 文件加载库来读取更加复杂的模型文件，这部分库文件在 OBJ_Loader.h。你无需详细理解它的工作原理，只需知道这个库将会传递给我们一个被命名被 TriangleList 的
+        Vector，其中每个三角形都有对应的点法向量与纹理坐标。此外，与模型相关的纹理也将被一同加载。<strong>注意：如果你想尝试加载其他模型，你目前只能手动修改模型路径。</strong>
+      </li>
+      <li>
+        我们引入了一个新的 Texture 类以从图片生成纹理，并且提供了查找纹理颜色的接口：Vector3f getColor(float u, float v)。
+      </li>
+      <li>
+        我们创建了 Shader.hpp 头文件并定义了 fragment_shader_payload，其中包括了 Fragment Shader 可能用到的参数。目前 main.cpp 中有三个
+        FragmentShader，其中 fragment_shader 是按照法向量上色的样例 Shader，其余两个将由你来实现。
+      </li>
+      <li>
+        主渲染流水线开始于 rasterizer::draw(std::vector&lt;Triangle&gt; &TriangleList).我们再次进行一系列变换，这些变换一般由 Vertex Shader
+        完成。在此之后，我们调用函数 rasterize_triangle。
+      </li>
+      <li>
+        rasterize_triangle 函数与你在作业 2 中实现的内容相似。不同之处在于被设定的数值将不再是常数，而是按照 Barycentric Coordinates 对法向量、颜色、纹理颜色与底纹颜色 (Shading
+        Colors) 进行插值。回忆我们上次为了计算 z value 而提供的 [alpha, beta, gamma]，这次你将需要将其应用在其他参数的插值上。你需要做的是计算插值后的颜色，并将 Fragment Shader
+        计算得到的颜色写入 framebuffer，这要求你首先使用插值得到的结果设置 fragment shader payload，并调用 fragment shader 得到计算结果。
+      </li>
+    </ul>
+    <h3>拓展</h3>
+    <ul>
+      <li>
+        <strong>尝试更多模型：</strong>找到其他可用的.obj 文件，提交渲染结果并把模型保存在 /models 目录下。这些模型也应该包含 Vertex Normal 信息。
+      </li>
+      <li>
+        <strong>双线性纹理插值：</strong>使用双线性插值进行纹理采样, 在 Texture 类中实现一个新方法 Vector3f getColorBilinear(float u, float v) 并通过
+        fragment shader 调用它。为了使双线性插值的效果更加明显，你应该考虑选择更小的纹理图。请同时提交纹理插值与双线性纹理插值的结果，并进行比较。
+      </li>
+    </ul>
+  </article>
+  <canvas id="canvas-el" width="700" height="700"></canvas>
+</body>
+
+</html>

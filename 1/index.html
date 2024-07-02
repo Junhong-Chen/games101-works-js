@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作业-1</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script type="module" crossorigin src="/assets/work1-L1DEvNFj.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="modulepreload" crossorigin href="/assets/vec3-DxJeS3HW.js">
+  <link rel="modulepreload" crossorigin href="/assets/vec2-AJwhbUHB.js">
+  <link rel="modulepreload" crossorigin href="/assets/vec4-DVpAb33O.js">
+</head>
+
+<body>
+  <article>
+    <h3>总览</h3>
+    <p>
+      到目前为止，我们已经学习了如何使用矩阵变换来排列二维或三维空间中的对象。所以现在是时候通过实现一些简单的变换矩阵来获得一些实际经验了。在接下来的三次作业中，我们将要求你去模拟一个<mark>基于 CPU
+        的光栅化渲染器</mark>的简化版本。
+    </p>
+    <p>
+      本次作业的任务是填写一个旋转矩阵和一个透视投影矩阵。给定三维下三个点 v0(2.0, 0.0, −2.0), v1(0.0, 2.0, −2.0), v2(−2.0, 0.0, −2.0),
+      你需要将这三个点的坐标变换为屏幕坐标并在屏幕上绘制出对应的线框三角形 (在代码框架中，我们已经提供了 draw_triangle
+      函数，所以你只需要去构建变换矩阵即可)。简而言之，我们需要进行模型、视图、投影、视口等变换来将三角形显示在屏幕上。在提供的代码框架中，我们留下了模型变换和投影变换的部分给你去完成。
+    </p>
+    <p>
+      以下是你需要在 main.cpp 中修改的函数（请不要修改任何的函数名和其他已经填写好的函数，并保证提交的代码是已经完成且能运行的）：
+    </p>
+    <ul>
+      <li><strong>get_model_matrix(float rotation_angle)：</strong>逐个元素地构建模型变换矩阵并返回该矩阵。在此函数中，你只需要实现三维中绕 z
+        轴旋转的变换矩阵，而不用处理平移与缩放。</li>
+      <li><strong>get_projection_matrix(float eye_fov, float aspect_ratio, float zNear, float
+          zFar)：</strong>使用给定的参数逐个元素地构建透视投影矩阵并返回该矩阵。</li>
+      <li><strong>[Optional] main()：</strong>自行补充你所需的其他操作。</li>
+    </ul>
+    <p>
+      当你在上述函数中正确地构建了模型与投影矩阵，光栅化器会创建一个窗口显示出线框三角形。由于光栅化器是逐帧渲染与绘制的，所以你可以使用 A 和 D 键去将该三角形绕 z 轴旋转
+      (此处有一项提高作业，将三角形绕任意过原点的轴旋转)。当你按下 Esc 键时，窗口会关闭且程序终止。
+    </p>
+    <h3>代码框架</h3>
+    <p>在本次作业中，因为你并不需要去使用三角形类，所以你需要理解与修改的文件为：rasterizer.hpp 和 main.cpp。其中 <strong>rasterizer.hpp</strong>
+      文件作用是生成渲染器界面与绘制。</p>
+    <p>光栅化器类在该程序系统中起着重要的作用，其成员变量与函数如下。</p>
+    <p>成员变量：</p>
+    <ul>
+      <li>
+        <strong>Matrix4f model, view, projection：</strong>三个变换矩阵。
+      </li>
+      <li>
+        <strong>vector&lt;Vector3f&gt; frame_buf：</strong>帧缓冲对象，用于存储需要在屏幕上绘制的颜色数据。
+      </li>
+    </ul>
+    <p>成员函数：</p>
+    <ul>
+      <li>
+        <strong>set_model(const Eigen::Matrix4f& m)：</strong>将内部的模型矩阵作为参数传递给光栅化器。
+      </li>
+      <li>
+        <strong>set_view(const Eigen::Matrix4f& v)：</strong>将视图变换矩阵设为内部视图矩阵。
+      </li>
+      <li>
+        <strong>set_projection(const Eigen::Matrix4f& p)：</strong>将内部的投影矩阵设为给定矩阵 p，并传递给光栅化器。
+      </li>
+      <li>
+        <strong>set_pixel(Vector2f point, Vector3f color)：</strong>将屏幕像素点 (x, y) 设为 (r, g, b) 的颜色，并写入相应的帧缓冲区位置。
+      </li>
+    </ul>
+    <p>
+      在 main.cpp 中，我们模拟了图形管线。我们首先定义了光栅化器类的实例，然后设置了其必要的变量。然后我们得到一个带有三个顶点的硬编码三角形
+      (请不要修改它)。在主函数上，我们定义了三个分别计算模型、视图和投影矩阵的函数，每一个函数都会返回相应的矩阵。接着，这三个函数的返回值会被
+      <strong>set_model()</strong>、<strong>set_view()</strong> 和 <strong>set_projection()</strong>
+      三个函数传入光栅化器中。最后，光栅化器在屏幕上显示出变换的结果。
+    </p>
+    <p>
+      在用模型、视图、投影矩阵对给定几何体进行变换后，我们得到三个顶点的正则化空间坐标 (canonical space coordinate)。正则化空间坐标是由三个取值范围在 [-1,1] 之间的 x, y, z
+      坐标构成。我们下一步需要做的就是视口变换，将坐标映射到我们的屏幕中 (window_width * window_height)，这些在光栅化器中都已完成，所以不需要担心。但是，你需要去理解这步操作是如何运作的，这一点十分重要。
+    </p>
+    <h3>拓展</h3>
+    <p>在 main.cpp 中构造一个函数，该函数的作用是得到绕任意过原点的轴的旋转变换矩阵。</p>
+  </article>
+  <canvas id="canvas-el" width="700" height="700"></canvas>
+</body>
+
+</html>

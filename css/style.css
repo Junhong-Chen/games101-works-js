@@ -1,0 +1,27 @@
+html, body {
+  margin: 0;
+  font-size: 16px;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em 0;
+  background-color: #333;
+}
+article {
+  position: relative;
+  width: 64em;
+  padding: .25em 1em;
+  margin-bottom: 1em;
+  border-radius: .5em;
+  box-shadow: 0 0 16px 0 black;
+  background: #1f1f1f;
+  color: #f1f1f1;
+}
+article>p, article>h4 {
+  margin: .75em 0;
+}
+article>p {
+  text-indent: 2ch;
+}
