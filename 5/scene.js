@@ -1,4 +1,6 @@
 import { vec3 } from "gl-matrix"
+import Object3D from "./object"
+import Light from "./light"
 
 export default class Scene {
   #objects = []
@@ -28,15 +30,10 @@ export default class Scene {
   }
 
   add(target) {
-    switch(target.constructor.name) {
-      case 'Object3D':
-      case 'Sphere':
-      case 'Triangle':
-        this.#objects.push(target)
-        break
-      case 'Light':
-        this.#lights.push(target)
-        break
+    if (target instanceof Object3D) {
+      this.#objects.push(target)
+    } else if (target instanceof Light) {
+      this.#lights.push(target)
     }
   }
 }

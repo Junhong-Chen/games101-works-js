@@ -24,8 +24,6 @@ function loader(path) {
 const canvasEl = document.querySelector('#canvas-el')
 const width = parseInt(canvasEl.getAttribute('width'))
 const height = parseInt(canvasEl.getAttribute('height'))
-const bunnyData = await loader('/models/bunny/bunny.obj')
-const bunny = new Mesh(bunnyData)
 
 const scene = new Scene({ width, height })
 const renderer = new Renderer(canvasEl)
@@ -35,9 +33,15 @@ const guiParams = {
   splitMethod: BVHAccel.SplitMethod.NAIVE,
 }
 
-scene.add(bunny)
 scene.add(new Light({ position: vec3.fromValues(-20, 70, 20), intensity: 1 }))
 scene.add(new Light({ position: vec3.fromValues(20, 70, 20), intensity: 1 }))
+
+loader('/models/bunny/bunny.obj').then(bunnyData => {
+  const bunny = new Mesh(bunnyData)
+  scene.add(bunny)
+  scene.buildBVH({ splitMethod: BVHAccel.SplitMethod.NAIVE })
+  render()
+})
 
 function render() {
   const start = new Date()
@@ -50,9 +54,6 @@ function render() {
   const secs = diff % 60
   console.log(`Render complete: \nTime Taken: ${hrs} hrs, ${mins} mins, ${secs} secs\n`)
 }
-
-scene.buildBVH({ splitMethod: BVHAccel.SplitMethod.NAIVE })
-render()
 
 gui.add(guiParams, 'splitMethod', BVHAccel.SplitMethod).onChange(splitMethod => {
   renderer.clear(scene)

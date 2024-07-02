@@ -2,7 +2,9 @@ import { vec3 } from "gl-matrix"
 import BVHAccel from "./BVH"
 import Ray from "./ray"
 import Intersection from "./intersection"
-import { EPSILON } from './utils'
+import { EPSILON } from "./utils"
+import Object3D from "./object"
+import Light from "./light"
 
 /**
  * Represents a scene.
@@ -38,17 +40,10 @@ export default class Scene {
    * @param {Object} object - The object to add.
    */
   add(target) {
-    switch (target.constructor.name) {
-      case 'Object3D':
-      case 'Sphere':
-      case 'Triangle':
-      case 'Mesh':
-        this.#objects.push(target)
-        break
-      case 'Light':
-      case 'AreaLight':
-        this.#lights.push(target)
-        break
+    if (target instanceof Object3D) {
+      this.#objects.push(target)
+    } else if (target instanceof Light) {
+      this.#lights.push(target)
     }
   }
 
@@ -59,7 +54,7 @@ export default class Scene {
   buildBVH({ splitMethod }) {
     this.#bvh = new BVHAccel({ primitives: this.#objects, splitMethod })
     for (const obj of this.#objects) {
-      if (obj.constructor.name === 'Mesh') obj.buildBVH({ splitMethod })
+      if (obj instanceof Object3D) obj.buildBVH({ splitMethod })
     }
   }
 

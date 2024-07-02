@@ -50,29 +50,31 @@ const lightMaterial = new Material({
 })
 
 // 模型数据
-const floorModel = await loader('/models/cornellbox/floor.obj')
-const shortboxModel = await loader('/models/cornellbox/shortbox.obj')
-const tallboxModel = await loader('/models/cornellbox/tallbox.obj')
-const leftModel = await loader('/models/cornellbox/left.obj')
-const rightModel = await loader('/models/cornellbox/right.obj')
-const lightModel = await loader('/models/cornellbox/light.obj')
-// const rockModel = await loader('/models/rock/rock.obj')
+const floorLoader = loader('/models/cornellbox/floor.obj')
+const shortboxLoader = loader('/models/cornellbox/shortbox.obj')
+const tallboxLoader = loader('/models/cornellbox/tallbox.obj')
+const leftLoader = loader('/models/cornellbox/left.obj')
+const rightLoader = loader('/models/cornellbox/right.obj')
+const lightLoader = loader('/models/cornellbox/light.obj')
 
-const floor = new Mesh({ data: floorModel, material: white })
-const shortbox = new Mesh({ data: shortboxModel, material: microfacet0 })
-const tallbox = new Mesh({ data: tallboxModel, material: microfacet1 })
-const left = new Mesh({ data: leftModel, material: red })
-const right = new Mesh({ data: rightModel, material: green })
-const light = new Mesh({ data: lightModel, material: lightMaterial })
-// const rock = new Mesh({ data: rockModel, material: white, scale: vec3.fromValues(100, 100, 100), translate: vec3.fromValues(300, 0, 300) })
+let floor, shortbox, tallbox, left, right, light
 
-scene.add(floor)
-scene.add(shortbox)
-scene.add(tallbox)
-scene.add(left)
-scene.add(right)
-scene.add(light)
-// scene.add(rock)
+Promise.all([floorLoader, shortboxLoader, tallboxLoader, leftLoader, rightLoader, lightLoader]).then(models => {
+  floor = new Mesh({ data: models[0], material: white })
+  shortbox = new Mesh({ data: models[1], material: microfacet0 })
+  tallbox = new Mesh({ data: models[2], material: microfacet1 })
+  left = new Mesh({ data: models[3], material: red })
+  right = new Mesh({ data: models[4], material: green })
+  light = new Mesh({ data: models[5], material: lightMaterial })
+
+  scene.add(floor)
+  scene.add(shortbox)
+  scene.add(tallbox)
+  scene.add(left)
+  scene.add(right)
+  scene.add(light)
+  scene.buildBVH({ splitMethod: BVHAccel.SplitMethod.SAH })
+})
 
 const gui = new GUI()
 const guiParams = {
@@ -102,7 +104,6 @@ function render(spp = guiParams.spp) {
     }, null)
   }
 }
-scene.buildBVH({ splitMethod: BVHAccel.SplitMethod.SAH })
 
 btn = gui.add(guiParams, 'render')
 gui.add(guiParams, 'spp', 1, 1024, 1)

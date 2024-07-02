@@ -411,7 +411,12 @@ const guiParams = {
   bilinearInterpolation: false
 }
 
-const mesh = await loader('/models/spot/spot_triangulated_good.obj')
+let mesh
+loader('/models/spot/spot_triangulated_good.obj').then(data => {
+  mesh = data
+  if (textureImg.complete)
+    render(angle, guiParams.shaderType)
+})
 
 const textureImg = document.createElement('img')
 const hmapImg = document.createElement('img')
@@ -422,7 +427,7 @@ hmapImg.src = '/models/spot/hmap.jpg'
 document.body.append(textureImg)
 document.body.append(hmapImg)
 textureImg.onload = function() {
-  render(angle, guiParams.shaderType)
+  if (mesh) render(angle, guiParams.shaderType)
 }
 
 window.addEventListener('keypress', function (e) {
