@@ -1,17 +1,21 @@
+html, body {
+  margin: 0;
+  font-size: 16px;
+}
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 16px;
+  padding: 1em 0;
   background-color: #333;
 }
 article {
   position: relative;
   width: 1024px;
   padding: .25em 1em;
+  margin-bottom: 1em;
   border-radius: .5em;
-  margin-bottom: .5em;
-  background: linear-gradient(-150deg, transparent 1.7em, lightgrey 0);
+  background: linear-gradient(-150deg, transparent 1.7em, beige 0);
 }
 article::before {
   content: '';
