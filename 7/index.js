@@ -50,12 +50,12 @@ const lightMaterial = new Material({
 })
 
 // 模型数据
-const floorLoader = loader('/models/cornellbox/floor.obj')
-const shortboxLoader = loader('/models/cornellbox/shortbox.obj')
-const tallboxLoader = loader('/models/cornellbox/tallbox.obj')
-const leftLoader = loader('/models/cornellbox/left.obj')
-const rightLoader = loader('/models/cornellbox/right.obj')
-const lightLoader = loader('/models/cornellbox/light.obj')
+const floorLoader = loader(`/${import.meta.env.VITE_BASE_PATH}/models/cornellbox/floor.obj`)
+const shortboxLoader = loader(`/${import.meta.env.VITE_BASE_PATH}/models/cornellbox/shortbox.obj`)
+const tallboxLoader = loader(`/${import.meta.env.VITE_BASE_PATH}/models/cornellbox/tallbox.obj`)
+const leftLoader = loader(`/${import.meta.env.VITE_BASE_PATH}/models/cornellbox/left.obj`)
+const rightLoader = loader(`/${import.meta.env.VITE_BASE_PATH}/models/cornellbox/right.obj`)
+const lightLoader = loader(`/${import.meta.env.VITE_BASE_PATH}/models/cornellbox/light.obj`)
 
 let floor, shortbox, tallbox, left, right, light
 
@@ -121,6 +121,6 @@ gui.add(guiParams, 'material', Material.TYPE).onFinishChange(material => {
     tallbox.material = microfacet1
   }
   if (imgEl.style.display !== 'none') {
-    imgEl.src = `/images/cornellbox-${material.toLowerCase()}.png`
+    imgEl.src = `/${import.meta.env.VITE_BASE_PATH}/images/cornellbox-${material.toLowerCase()}.png`
   }
 })

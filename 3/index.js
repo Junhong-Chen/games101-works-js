@@ -412,7 +412,7 @@ const guiParams = {
 }
 
 let mesh
-loader('/models/spot/spot_triangulated_good.obj').then(data => {
+loader(`/${import.meta.env.VITE_BASE_PATH}/models/spot/spot_triangulated_good.obj`).then(data => {
   mesh = data
   if (textureImg.complete)
     render(angle, guiParams.shaderType)
@@ -422,8 +422,8 @@ const textureImg = document.createElement('img')
 const hmapImg = document.createElement('img')
 textureImg.style.display = 'none'
 hmapImg.style.display = 'none'
-textureImg.src = '/models/spot/spot_texture.svg' // 这里为了查看双线性插值效果，使用了更低分辨率的贴图
-hmapImg.src = '/models/spot/hmap.jpg'
+textureImg.src = `/${import.meta.env.VITE_BASE_PATH}/models/spot/spot_texture.svg` // 这里为了查看双线性插值效果，使用了更低分辨率的贴图
+hmapImg.src = `/${import.meta.env.VITE_BASE_PATH}/models/spot/hmap.jpg`
 document.body.append(textureImg)
 document.body.append(hmapImg)
 textureImg.onload = function() {

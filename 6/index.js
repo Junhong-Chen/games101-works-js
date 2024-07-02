@@ -36,7 +36,7 @@ const guiParams = {
 scene.add(new Light({ position: vec3.fromValues(-20, 70, 20), intensity: 1 }))
 scene.add(new Light({ position: vec3.fromValues(20, 70, 20), intensity: 1 }))
 
-loader('/models/bunny/bunny.obj').then(bunnyData => {
+loader(`/${import.meta.env.VITE_BASE_PATH}/models/bunny/bunny.obj`).then(bunnyData => {
   const bunny = new Mesh(bunnyData)
   scene.add(bunny)
   scene.buildBVH({ splitMethod: BVHAccel.SplitMethod.NAIVE })

@@ -2,6 +2,7 @@ import { resolve } from "path"
 
 /** @type {import('vite').UserConfig} */
 export default {
+  base: process.env.npm_package_name,
   build: {
     rollupOptions: {
       input: {
@@ -22,5 +23,4 @@ export default {
     port: 5173,
     host: '0.0.0.0'
   },
-  publicDir: 'public',
 }
