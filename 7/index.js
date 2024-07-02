@@ -105,6 +105,7 @@ function render(spp = guiParams.spp) {
 scene.buildBVH({ splitMethod: BVHAccel.SplitMethod.SAH })
 
 btn = gui.add(guiParams, 'render')
+gui.add(guiParams, 'spp', 1, 1024, 1)
 gui.add(guiParams, 'material', Material.TYPE).onFinishChange(material => {
   red.type = material
   green.type = material
@@ -122,4 +123,3 @@ gui.add(guiParams, 'material', Material.TYPE).onFinishChange(material => {
     imgEl.src = `/images/cornellbox-${material.toLowerCase()}.png`
   }
 })
-gui.add(guiParams, 'spp', 1, 1024, 1)

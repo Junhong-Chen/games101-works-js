@@ -9,11 +9,11 @@
 
 <body>
   <article>
-    <h4>总览</h4>
+    <h3>总览</h3>
     <p>
       在之前的练习中，我们实现了 Whitted-Style Ray Tracing 算法，并且用 BVH 等加速结构对于求交过程进行了加速。在本次实验中，我们将在上一次实验的基础上实现完整的 Path Tracing 算法。至此，我们已经来到了光线追踪版块的最后一节内容。
     </p>
-    <h4>代码框架</h4>
+    <h3>代码框架</h3>
     <p>相比上一次实验，本次实验对框架的修改较大，主要在以下几方面：</p>
     <ul>
       <li>
@@ -72,16 +72,16 @@
     <p>伪代码：</p>
     <img src="/images/pseudo-code.png" alt="pseudo-code">
     <p>如果严格按照上述算法实现，你会发现渲染结果中光源区域为纯黑。请分析这一现象的原因，并且修改 Path Tracing 算法使光源可见。</p>
-    <h4>注意事项</h4>
+    <h3>注意事项</h3>
     <ul>
       <li>
-        本次实验代码的<mark title="下面展示的是已经渲染好的结果，如果想查不同的渲染效果，点击右上角的 render 按钮">运行非常慢</mark>，建议调试时调整 main.cpp 中的场景大小或 Render.cpp 中的 SPP 数以加快运行速度；此外，还可以实现多线程来进一步加快运算。
+        本次实验代码的<mark title="下面展示的是已经渲染好的结果，如果想查不同的渲染效果，在右上角的面板中调整参数后点击 render 按钮">运行非常慢</mark>，建议调试时调整 main.cpp 中的场景大小或 Render.cpp 中的 SPP 数以加快运行速度；此外，还可以实现多线程来进一步加快运算。
       </li>
       <li>
         注意数值精度问题，尤其注意 pdf 接近零的情况，以及 sampleLight 时判断光线是否被挡的边界情况。这些情况往往会造成渲染结果噪点过多，或出现黑色横向条纹。
       </li>
     </ul>
-    <h4>拓展</h4>
+    <h3>拓展</h3>
     <p>
       目前的框架中拆分 sample、eval、pdf，实现了最基础的 Diffuse 材质。请在不破坏这三个函数定义方式的情况下修改这三个函数，实现<a target="_blank" href="https://learnopengl-cn.github.io/07%20PBR/01%20Theory/#_2"> Microfacet 模型</a>。本任务不要求你实现复杂的采样手段，因此你依然可以沿用 Diffuse 材质采用的 sample 与 pdf 计算。
     </p>

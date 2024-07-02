@@ -10,11 +10,11 @@
 
 <body>
   <article>
-    <h4>总览</h4>
+    <h3>总览</h3>
     <p>
       在之前的编程练习中，我们实现了基础的光线追踪算法，具体而言是光线传输、光线与三角形求交。我们采用了这样的方法寻找光线与场景的交点：遍历场景中的所有物体，判断光线是否与它相交。在场景中的物体数量不大时，该做法可以取得良好的结果，但当物体数量增多、模型变得更加复杂，该做法将会变得非常低效。因此，我们需要加速结构来加速求交过程。在本次练习中，我们重点关注物体划分算法 Bounding Volume Hierarchy (BVH)。本练习要求你实现 Ray-BoundingVolume 求交与 BVH 查找。
     </p>
-    <h4>代码框架</h4>
+    <h3>代码框架</h3>
     <p>首先，你需要从上一次编程练习中引用以下函数：</p>
     <ul>
       <li>
@@ -51,7 +51,7 @@
         <strong>BVH.hpp：</strong>BVH 加速类。场景 scene 拥有一个 BVHAccel 实例。从根节点开始，我们可以递归地从物体列表构造场景的 BVH。
       </li>
     </ul>
-    <h4>拓展</h4>
+    <h3>拓展</h3>
     <p>
       <strong>SAH 查找：</strong>自学 SAH(Surface Area Heuristic)，正确实现 SAH 加速，并且提交结果图片，并在 README.md 中说明 SVH 的实现方法，并对比 BVH、SVH 的时间开销。(可参考 <a target="_blank" href="http://15462.courses.cs.cmu.edu/fall2015/lecture/acceleration/slide_024">SAH</a>，也可以查找其他资料)。
     </p>

@@ -69,7 +69,7 @@ export default class Renderer {
    * @param {number} progress - The current progress, between 0 and 1.
    */
   updateProgress(progress) {
-    console.log(`Progress: %c${(progress * 100).toFixed(2)}%`, 'color:dodgerblue')
+    console.log(`%c${(progress * 100).toFixed(2)}%`, 'color:dodgerblue')
   }
 
   /**

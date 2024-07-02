@@ -77,7 +77,7 @@ export default class Material {
     this.specularExponent = specularExponent
     this.roughness = roughness
     this.metalness = metalness
-    this.a2 = this.roughness * this.roughness
+    this.a2 = roughness * roughness
   }
 
   /**
