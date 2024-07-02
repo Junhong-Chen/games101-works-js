@@ -38,7 +38,7 @@ export default class Texture {
   }
 
   getColorBilinear(u, v) {
-    // uv 坐标左下角为起始点
+    // uv 坐标以左下角为起始点
     const uImg = u * this.#width
     const vImg = (1 - v) * this.#height
     const u0 = ~~uImg
