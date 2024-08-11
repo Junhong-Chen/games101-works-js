@@ -2,14 +2,6 @@ import { vec3 } from "gl-matrix"
 import { clamp, reflect } from "./utils"
 
 /**
- * Enum for material types.
- * @enum {number}
- */
-export const MaterialType = {
-  DIFFUSE: 0,
-}
-
-/**
  * Convert the local vector a to world coordinates based on normal N.
  * @param {vec3} a - The local vector.
  * @param {vec3} N - The normal vector.
